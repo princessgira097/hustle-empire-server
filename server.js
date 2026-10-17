@@ -2,14 +2,16 @@ const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 const app = express();
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 let players = {};
 io.on('connection', (socket) => {
   socket.on('joinEmpire', (data) => {
-    players[socket.id] = { id: socket.id, name: (data.name || "Hustler").slice(0,20), netWorth: data.netWorth || 0, level: data.level || 1 };
+    players[socket.id] = { id: socket.id, name: (data.name || "Hustler").slice(0,20), netWorth: data.netWorth || 0, level: 1 };
     socket.join('hustle-empire');
     io.to('hustle-empire').emit('empireUpdate', Object.values(players));
   });
@@ -22,6 +24,6 @@ io.on('connection', (socket) => {
     io.to('hustle-empire').emit('empireUpdate', Object.values(players));
   });
 });
-app.get('/', (req,res) => res.send('Hustle Empire Chairman is LIVE'));
+app.get('/', (req,res) => res.sendFile(path.join(__dirname, 'public', 'Hustle_Empire.html')));
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => console.log('Live on '+PORT));
+server.listen(PORT, () => console.log("Live on "+PORT));
