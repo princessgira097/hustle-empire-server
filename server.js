@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'Hustle_Empire-7.html')));
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'Hustle_Empire-18.html')));
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' }, maxHttpBufferSize: 1e6 });
 
